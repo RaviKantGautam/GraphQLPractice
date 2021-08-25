@@ -120,7 +120,6 @@ class DeleteCategory(graphene.Mutation):
             message
         }
     }
-
     '''
     class Arguments:
         id = graphene.ID(required=True)
