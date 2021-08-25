@@ -30,6 +30,18 @@ class CategoryInput(graphene.InputObjectType):
 class CreateCategory(graphene.Mutation):
     '''
     Similar to custom serializers in DRF
+
+    Example:
+    mutation CreateCategory{
+        createCategory(input:{name:"hellocat"}){
+            ok
+            category{
+            id
+            status
+            name
+            }
+        }
+    }
     '''
     class Arguments:
         input = CategoryInput(required=True)
@@ -57,6 +69,18 @@ class CreateCategory(graphene.Mutation):
 class UpdateCategory(graphene.Mutation):
     '''
     This method is use to update category
+    
+    Example:
+    mutation UpdateCategory{
+        updateCategory(id:2, input:{name:"wow"}){
+            ok
+            category{
+            name
+            status
+            }
+        }
+    }
+
     '''
     class Arguments:
         id = graphene.ID(required=True)
@@ -73,13 +97,51 @@ class UpdateCategory(graphene.Mutation):
         otherwise return None
         '''
         id = kwargs.get('id')
+        print(id)
         input = kwargs.get('input')
 
         try:
-            instance = Category.objects.get(id=id).update(name=input.name)
+            instance = Category.objects.get(id=id)
+            instance.name = input.name
+            instance.save()
         except Category.DoesNotExist:
             return UpdateCategory(ok=False, category=input)
         return UpdateCategory(ok=True, category=instance)
+
+
+class DeleteCategory(graphene.Mutation):
+    '''
+    This method is use to delete category
+    
+    Example:
+    mutation DeleteCategory{
+        deleteCategory(id:1){
+            ok
+            message
+        }
+    }
+
+    '''
+    class Arguments:
+        id = graphene.ID(required=True)
+    
+    #return Fields
+    ok = graphene.Boolean()
+    message = graphene.String(default_value="get error in delete action")
+
+    @staticmethod
+    def mutate(root, info, **kwargs):
+        '''
+        Saves the valid data and return outputFields
+        otherwise return None
+        '''
+        id = kwargs.get('id')
+
+        try:
+            Category.objects.get(id=id).delete()
+        except Category.DoesNotExist:
+            return DeleteCategory(ok=False, message="Doenst found category")
+        return DeleteCategory(ok=True, message="Successfully Deleted.")
 
 
 
@@ -89,6 +151,7 @@ class Mutation(graphene.ObjectType):
     '''
     create_category = CreateCategory.Field()
     update_category = UpdateCategory.Field()
+    delete_category = DeleteCategory.Field()
 
 
 class Query(graphene.ObjectType):
