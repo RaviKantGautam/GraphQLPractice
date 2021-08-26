@@ -23,4 +23,5 @@ Topic covered in this example
 - [GraphQL](https://graphql.org/)
 - [Django-GraphQL Documentation](https://graphene-python.org/)
 - [Wiki](https://en.wikipedia.org/wiki/GraphQL)
-- [Youtube Playlist](https://youtu.be/ZOHIZXRfvVY)
+- [Youtube Playlist Node & React](https://youtube.com/playlist?list=PL4cUxeGkcC9iK6Qhn-QLcXCXPQUov1U7f)
+- [Youtube Playlist Django & Vue.js](https://youtube.com/playlist?list=PLHHVSHrmEkdo5qA1RQB7PNzIbN9_3rj2r)
