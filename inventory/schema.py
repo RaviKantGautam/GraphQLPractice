@@ -3,6 +3,7 @@ from graphene import relay
 from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from .models import Category, Product
+from graphql_jwt.decorators import login_required
 
 
 class CategoryType(DjangoObjectType):
@@ -11,7 +12,7 @@ class CategoryType(DjangoObjectType):
     '''
     class Meta:
         model = Category
-        fields = ("id", "name", "product", "created", "status")
+        fields = ("id", "name", "product", "created",)
 
 
 class IngredientType(DjangoObjectType):
@@ -37,7 +38,6 @@ class CreateCategory(graphene.Mutation):
             ok
             category{
             id
-            status
             name
             }
         }
@@ -51,6 +51,7 @@ class CreateCategory(graphene.Mutation):
     category = graphene.Field(CategoryType)
 
     @staticmethod
+    @login_required
     def mutate(root, info, input):
         '''
         Saves the valid data and return outputFields

@@ -1,5 +1,5 @@
 import jwt
-from .models import User
+from django.contrib.auth.models import User
 from datetime import datetime
 from graphql_jwt.settings import jwt_settings
     
